@@ -51,7 +51,7 @@ git push origin branch-name
 
 ## Compare and pull requests
 
-[https://github.com/NEURoboticsClub/Card-Playing-Robot]
+[https://github.com/AndreaChavezMunoz/CompBiomech]
 
 ## OTHER COMMANDS
 
