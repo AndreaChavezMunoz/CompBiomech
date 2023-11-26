@@ -1,16 +1,11 @@
-function [x] = raphson(x0, g)
-%{
-x0 is the initial guess
-g is the equilibrium function to be minimized
-%}
+function [x] = raphson(x0)
 
-% Iteration Constraints
+%% Iteration Constraints
 tol = 0.001;    % tolerance criteria to stop scheme
 maxiter = 10000;  % maximum number of iterations allowed before stopping
 
-% Newton Raphson Iteration 
-% THIS NEEDS TO BE UPDATED, IDK IF THIS IS THE RIGHT WAY OF TESTING 
-% IF THE CODE WOULD BREAK
+%% Newton Raphson Iteration
+
 if length([1]) ~= length(x0)  % check if the number of equations match the number of unknowns
     disp('1Error: number of unknowns does not coincide with number of equations')
     return
@@ -20,14 +15,14 @@ else
     % first perform Newton Raphson for the initial guess 
     
     % evaluate the function, f, with the initial guess, x0
-    f = g(x0); % call: equilibrium_r_or_loaded_tutorial
+    f = equilibrium_r_or_loaded_tutorial(x0); % call: equilibrium_r_or_loaded_tutorial
     
     iter = 0; % initial iteration
     h = 0.1; % step size to perform the derivative (forward difference)    
     
     xinc = x0; % initial guess of the root
     xinc = xinc + h; % current root + derivative step
-    f_prime0 = (g(xinc)-f)/h; % compute the derivative of f, between x0 and xinc
+    f_prime0 = (equilibrium_r_or_loaded_tutorial(xinc)-f)/h; % compute the derivative of f, between x0 and xinc
     u0 = f/f_prime0; % divide f by its derivative, f/f'
     x = x0 - u0; % update guess for ro: X = X0 - f/f' (Newton-Raphson Method)
     
@@ -39,10 +34,10 @@ else
     while iter < maxiter  % iterate until one of the criteras are met
         
         iter = iter+1; % current iteration number        
-        f = g(x); % evaluate f at x
+        f = equilibrium_r_or_loaded_tutorial(x); % evaluate f at x
         xinc = x; % current root guess
         xinc = xinc + h; % current root + derivative step
-        f_prime = (g(xinc)-f)/h; % compute the derivative of f, between x and xinc
+        f_prime = (equilibrium_r_or_loaded_tutorial(xinc)-f)/h; % compute the derivative of f, between x and xinc
         u = f/f_prime; % divide f by its derivative, f/f'
         x = x-u; % update guess for ro: X_n = X_(n-1) - f/f' (Newton-Raphson Method)
         
@@ -66,6 +61,6 @@ elseif norm(f) <= tol
     
 end
 iter % number of iterations you performed
-g % function evaluated 
+f % function evaluated 
 x % root, ro
 end
