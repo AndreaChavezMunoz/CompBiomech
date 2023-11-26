@@ -68,7 +68,7 @@ for index1 = 0:n-1
 
 end
 
-pressure = F - Pi; % ultimately fvalue needs to go to zero (within the defined tolerance)
+pressure = P - Pi; % ultimately fvalue needs to go to zero (within the defined tolerance)
 force = F;
 output = [pressure, force];
 
