@@ -39,13 +39,13 @@ for index1 = 0:n-1 % for loop going from inner to outer radius
                 
     R1 = Ri + index1*h; % reference position
     r1 = sqrt((ri .^ 2) - ((1 / lambda)*(R1^2 - Ri^2))); % calculate the radius by mapping from the reference configuration
-    F1 = diag([lambda r1/R1 R1/(lambda*r1)]); % define the the deformation gradient tensor (use the diag function)
+    F1 = diag([R1/(lambda*r1) r1/R1 lambda]); % define the the deformation gradient tensor (use the diag function)
     sigma_extra1 = constitutive_model(F1, materialParameters); % calculate sigma_extra using the constitutive model
     f1 = R1/(lambda * r1^2) .* (sigma_extra1(2, 2) - sigma_extra1(1, 1)); % evaluate the function inside the integral, at R1
     
     R2 = R1 + h; % next position
     r2 = sqrt((ri .^ 2) - ((1 / lambda)*(R2^2 - Ri^2))); % calculate the radius by mapping from the reference configuration
-    F2 = diag([lambda r2/R2 R2/(lambda*r2)]); % define the the deformation gradient tensor (use the diag function)
+    F2 = diag([R1/(lambda*r1) r1/R1 lambda]); % define the the deformation gradient tensor (use the diag function)
     sigma_extra2 = constitutive_model(F2, materialParameters); % calculate sigma_extra using the constitutive model
     f2 = R2/(lambda * r2^2) .* (sigma_extra2(2, 2) - sigma_extra2(1, 1)); % evaluate the function inside the integral, at R2
     
