@@ -38,13 +38,21 @@ c = materialParameters(7);
 
 for index1 = 0:n-1 % for loop going from inner to outer radius
                 
-    R1 = Ri + index1*h; % reference position
+   R1 = Ri + index1*h; % reference position
     r1 = sqrt((ri .^ 2) - ((1 / lambda)*(R1^2 - Ri^2))); % calculate the radius by mapping from the reference configuration
     F1 = diag([lambda r1/R1 R1/(lambda*r1)]); % define the the deformation gradient tensor (use the diag function)
+    sigma_extra1 = constitutive_model(F1, materialParameters); % calculate sigma_extra using the constitutive model
+    f1 = R1/(lambda * r1^2) .* (sigma_extra1(2, 2) - sigma_extra1(1, 1)); % evaluate the function inside the integral, at R1
+    
     R2 = R1 + h; % next position
     r2 = sqrt((ri .^ 2) - ((1 / lambda)*(R2^2 - Ri^2))); % calculate the radius by mapping from the reference configuration
     F2 = diag([lambda r2/R2 R2/(lambda*r2)]); % define the the deformation gradient tensor (use the diag function)
+    sigma_extra2 = constitutive_model(F2, materialParameters); % calculate sigma_extra using the constitutive model
+    f2 = R2/(lambda * r2^2) .* (sigma_extra2(2, 2) - sigma_extra2(1, 1)); % evaluate the function inside the integral, at R2
     
+    % calculate the intergral by solving the Trapezoidal Rule
+    T1 = (((f2+f1) / 2) * h) + T1; % remember to add the previous T_(index-1);
+
     % Calculates cauchy and strain components
     C = F2'*F2;
     E = 0.5 * (C - eye(3,3));
@@ -53,12 +61,12 @@ for index1 = 0:n-1 % for loop going from inner to outer radius
     Ezz = E(3,3);
 
     % Tries to identify the lagrange multiplier
-    p = (lambda ** 2) * (.5 * c * e ** (2 * c1 * Err + 2 * c4 * Etheta + 2 * c6 * Ezz)) - Pi + T1;
+    p = (lambda ^ 2) * (.5 * c * exp(2 * c1 * Err + 2 * c4 * Etheta + 2 * c6 * Ezz)) - Pi + T1;
 
     % Calculates stresses with the multiplier
-    stress_zz(index) = -p * eye(3) +  F2(3, 3) ** 2 * (.5 * c * e ** (2 * c3 * Ezz + 2 * c6 * Err + 2 * c5 * Etheta));
-    stress_theta(index) = -p * eye(3) + F2(2, 2) ** 2 * (.5 * c * e ** (2 * c2 * Etheta + 2 * c4 * Err + 2 * c5 * Ezz));
-    stress_rr(index) = -p * eye(3) + F2(1, 1) ** 2 * (.5 * c * e ** (2 * c1 * Err + 2 * c4 * Etheta + 2 * c6 * Ezz)); 
+    stress_zz(index1 + 1) = -p +  F2(3, 3) ^ 2 * (.5 * c * exp(2 * c3 * Ezz + 2 * c6 * Err + 2 * c5 * Etheta));
+    stress_theta(index1 + 1) = -p + F2(2, 2) ^ 2 * (.5 * c * exp(2 * c2 * Etheta + 2 * c4 * Err + 2 * c5 * Ezz));
+    stress_rr(index1 + 1) = -p + F2(1, 1) ^ 2 * (.5 * c * exp(2 * c1 * Err + 2 * c4 * Etheta + 2 * c6 * Ezz)); 
 
 end
 end
