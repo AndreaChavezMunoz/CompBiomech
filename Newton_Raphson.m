@@ -15,8 +15,7 @@ tol = 0.001;    % tolerance criteria to stop scheme
 maxiter = 1000;  % maximum number of iterations allowed before stopping
 
 %% Newton Raphson Iteration
-
-if length(H) ~= length(x0)  % check if the number of equations match the number of unknowns
+if false  % check if the number of equations match the number of unknowns
     disp('1Error: number of unknowns does not coincide with number of equations')
     return
     
