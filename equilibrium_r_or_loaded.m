@@ -60,12 +60,12 @@ for index1 = 0:n-1 % for loop going from inner to outer radius
     Ezz = E(3,3);
 
     % Tries to identify the lagrange multiplier
-    p = (lambda ** 2) * (.5 * c * e ** (2 * c1 * Err + 2 * c4 * Etheta + 2 * c6 * Ezz)) - Pi + T1;
+    p = (lambda ^ 2) * (.5 * c * e ^ (2 * c1 * Err + 2 * c4 * Etheta + 2 * c6 * Ezz)) - Pi + T1;
 
     % Calculates stresses with the multiplier
-    stress_zz(index) = -p * eye(3) +  F2(3, 3) ** 2 * (.5 * c * e ** (2 * c3 * Ezz + 2 * c6 * Err + 2 * c5 * Etheta));
-    stress_theta(index) = -p * eye(3) + F2(2, 2) ** 2 * (.5 * c * e ** (2 * c2 * Etheta + 2 * c4 * Err + 2 * c5 * Ezz));
-    stress_rr(index) = -p * eye(3) + F2(1, 1) ** 2 * (.5 * c * e ** (2 * c1 * Err + 2 * c4 * Etheta + 2 * c6 * Ezz)); 
+    stress_zz(index) = -p * eye(3) +  F2(3, 3) ^ 2 * (.5 * c * e ^ (2 * c3 * Ezz + 2 * c6 * Err + 2 * c5 * Etheta));
+    stress_theta(index) = -p * eye(3) + F2(2, 2) ^ 2 * (.5 * c * e ^ (2 * c2 * Etheta + 2 * c4 * Err + 2 * c5 * Ezz));
+    stress_rr(index) = -p * eye(3) + F2(1, 1) ^ 2 * (.5 * c * e ^ (2 * c1 * Err + 2 * c4 * Etheta + 2 * c6 * Ezz)); 
 
 end
 
