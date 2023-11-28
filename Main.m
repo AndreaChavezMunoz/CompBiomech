@@ -16,7 +16,7 @@
 % the root of the equation:
 %   Pi - int_{ri}^{ro} (tqq-trr)/r dr = 0
 %=========================================================================
-cd 'C:\Users\slee4\OneDrive\Documents\Fall 2023\BIOE 5640\Lecture 16';
+%cd 'C:\Users\slee4\OneDrive\Documents\Fall 2023\BIOE 5640\Lecture 16';
 
 close all, clear all, clc
 %% Load and Define INPUT DATA
@@ -69,24 +69,25 @@ test_or_est = zeros(1, length(luminalP));
 control_P_or = figure();
 for stretch_index = 1:length(control_axialStretch)
     for P_index = 1:length(luminalP)
-        control_or_est(1, P_index) = Newton_Raphson(H{1,1}, control_ref_outer_radius, control_ref_inner_radius, ...
+        control_or_est(1, P_index) = Newton_Raphson(H{1,1}, control_ref_inner_radius,control_ref_outer_radius,  ...
                                control_axialStretch(1, stretch_index), luminalP(1, P_index), material_control, control_ref_outer_radius); % call the Newton Raphson function (Newton_Raphson_tutorial.m)
-        plot(luminalP(1,P_index), control_or_est(1,P_index));
-        hold on
+        
         
     end
+    plot(luminalP, control_or_est);
+    hold on
 
 end
 
 test_P_or = figure();
 for stretch_index = 1:length(test_axialStretch)
     for P_index = 1:length(luminalP)
-        test_or_est(1, P_index) = Newton_Raphson(H{1,1}, test_ref_outer_radius, test_ref_inner_radius, ...
+        test_or_est(1, P_index) = Newton_Raphson(H{1,1}, test_ref_inner_radius, test_ref_outer_radius,  ...
                                test_axialStretch(1, stretch_index), luminalP(1, P_index), material_test, test_ref_outer_radius); % call the Newton Raphson function (Newton_Raphson_tutorial.m)
-        plot(luminalP(1,P_index), test_or_est(1,P_index));
-        hold on
+        
         
     end
-
+    plot(luminalP(1,P_index), test_or_est(1,P_index));
+    hold on
 end
         
