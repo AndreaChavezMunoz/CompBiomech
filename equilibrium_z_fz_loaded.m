@@ -1,7 +1,9 @@
-function [z_fz_output] = equilibrium_z_fz_loaded(Ri, Ro, lambda, fz, materialParameters)
+function [z_fz_output] = equilibrium_z_fz_loaded(Ri, Ro, lambda, materialParameters, x0)
+
+ro = x0(1,1); % outer radius
 
 % calculate the current inner radius (using the reference as a guess)
-ri = sqrt(Ro.^2-1./lambda*(Ro^2-Ri^2)); 
+ri = sqrt(ro.^2-1./lambda*(Ro^2-Ri^2)); 
 
 a = Ri;   % lower limit of the independent variable a
 b = Ro;   % upper limit of the independent variable b
@@ -36,7 +38,6 @@ for index1 = 0:n-1
 
 end
 
-fvalue = T2 - fz; % ultimately fvalue needs to go to zero (within the defined tolerance)
-z_fz_output = fvalue;
+z_fz_output = T2 ;
 
 end
