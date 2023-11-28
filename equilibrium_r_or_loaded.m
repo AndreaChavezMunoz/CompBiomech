@@ -20,21 +20,6 @@ T1 = 0;    % initial value for the integral (T is the result of the integral)
 n = 20;    % number of spatial steps
 h = (b-a)/n;  % spatial step size, based on n and the bounds [a,b]
 
-% Vector containing lagrange multipliers and stresses
-lagrange_multipliers = zeros(1, n);
-stress_rr = zeros(1, n);
-stress_zz = zeros(1, n);
-stress_theta = zeros(1, n);
-
-% Obtains material parameters
-c1 = materialParameters(1);
-c2 = materialParameters(2);
-c3 = materialParameters(3);
-c4 = materialParameters(4);
-c5 = materialParameters(5);
-c6 = materialParameters(6);
-c = materialParameters(7);
-
 for index1 = 0:n-1 % for loop going from inner to outer radius
                 
     R1 = Ri + index1*h; % reference position
@@ -51,21 +36,6 @@ for index1 = 0:n-1 % for loop going from inner to outer radius
     
     % calculate the intergral by solving the Trapezoidal Rule
     T1 = (((f2+f1) / 2) * h) + T1; % remember to add the previous T_(index-1);
-
-    % Calculates cauchy and strain components
-    C = F2'*F2;
-    E = 0.5 * (C - eye(3,3));
-    Err = E(1,1);
-    Etheta =  E(2,2);
-    Ezz = E(3,3);
-
-    % Tries to identify the lagrange multiplier
-    p = (lambda ^ 2) * (.5 * c * e ^ (2 * c1 * Err + 2 * c4 * Etheta + 2 * c6 * Ezz)) - Pi + T1;
-
-    % Calculates stresses with the multiplier
-    stress_zz(index) = -p * eye(3) +  F2(3, 3) ^ 2 * (.5 * c * e ^ (2 * c3 * Ezz + 2 * c6 * Err + 2 * c5 * Etheta));
-    stress_theta(index) = -p * eye(3) + F2(2, 2) ^ 2 * (.5 * c * e ^ (2 * c2 * Etheta + 2 * c4 * Err + 2 * c5 * Ezz));
-    stress_rr(index) = -p * eye(3) + F2(1, 1) ^ 2 * (.5 * c * e ^ (2 * c1 * Err + 2 * c4 * Etheta + 2 * c6 * Ezz)); 
 
 end
 
