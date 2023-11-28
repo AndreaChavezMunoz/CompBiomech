@@ -1,1 +1,41 @@
+function [output] = lagrange_calculator(Ri, Ro, lambda, materialParameters)
 
+% calculate the current inner radius (using the reference as a guess)
+ri = sqrt(Ro.^2-1./lambda*(Ro^2-Ri^2)); 
+
+a = Ri;   % lower limit of the independent variable a
+b = Ro;   % upper limit of the independent variable b
+T2 = 0;    % initial value for the  integral
+n = 1000;    % number of spatial steps
+h = (b - a)/n;  % spatial step size, based on n and the bounds [a,b]
+
+% Vector containing lagrange multipliers
+lagrange_multipliers = zeros(1, n)
+
+% Obtains material parameters
+c1 = materialParameters(1)
+c2 = materialParameters(2)
+c3 = materialParameters(3)
+c4 = materialParameters(4)
+c5 = materialParameters(5)
+c6 = materialParameters(6)
+c = materialParameters(7)
+
+% for loop going from inner to outer radius
+for index1 = 0:n-1 
+                
+    R = Ri + h/2 + index1*h; % reference position
+
+    r = (ri ^ 2 + (1/lambda) * (R1 ^ 2 - Ri ^ 2)) ^ .5; % calculate the radius by mapping from the reference configuration
+    F_vector = [(1/lambda) * (R1/r1), r1/R1, lambda];
+    F = diag(F_vector); % define the the deformation gradient tensor (use the diag function)
+
+    % Tries to identify the lagrange multiplier
+    p = (lambda ** 2) * (.5 * c * e ** (c1 * ))
+
+end
+
+fvalue = T2 - fz; % ultimately fvalue needs to go to zero (within the defined tolerance)
+z_fz_output = fvalue;
+
+end
