@@ -1,4 +1,4 @@
-function [output_r_or, stresses] = equilibrium_r_or_loaded(Ri, Ro, lambda, Pi, materialParameters, x0)
+function [output_r_or, stress_rr, stress_theta, stress_zz] = equilibrium_r_or_loaded(Ri, Ro, lambda, Pi, materialParameters, x0)
 
 %=========================================================================
 % RADIAL EQUILIBRIUM - Local
@@ -64,11 +64,12 @@ for index1 = 0:n-1 % for loop going from inner to outer radius
 
     % Calculates stresses with the multiplier
     stress_zz(index) = -p * eye(3) +  F2(2, 2) ** 2 * (.5 * c * e ** (2 * c3 * Ezz + 2 * c6 * Err + 2 * c5 * Etheta));
-    stress_theta(index) = -p * eye(3) + F2(1, 1) ** 2 * (.5 * c * e ** (2 * c3 * Etheta + 2 * c
-    stress_rr(index) = -p * eye(3) + lambda ** 2 * (.5 * c * e ** (2 * c1 * Err + 2 * c4 * Etheta + 2 * c6 * Ezz)); 
-    
+    stress_theta(index) = -p * eye(3) + F2(2, 2) ** 2 * (.5 * c * e ** (2 * c2 * Etheta + 2 * c4 * Err + 2 * c5 * Ezz));
+    stress_rr(index) = -p * eye(3) + F1(1, 1) ** 2 * (.5 * c * e ** (2 * c1 * Err + 2 * c4 * Etheta + 2 * c6 * Ezz)); 
+
 end
 
 fvalue = T1 - Pi; % ultimately fvalue needs to go to zero (within the defined tolerance)
 output_r_or = fvalue;
+
 end
