@@ -38,7 +38,7 @@ c = materialParameters(7);
 
 for index1 = 0:n-1 % for loop going from inner to outer radius
                 
-   R1 = Ri + index1*h; % reference position
+    R1 = Ri + index1*h; % reference position
     r1 = sqrt((ri .^ 2) - ((1 / lambda)*(R1^2 - Ri^2))); % calculate the radius by mapping from the reference configuration
     F1 = diag([lambda r1/R1 R1/(lambda*r1)]); % define the the deformation gradient tensor (use the diag function)
     sigma_extra1 = constitutive_model(F1, materialParameters); % calculate sigma_extra using the constitutive model
