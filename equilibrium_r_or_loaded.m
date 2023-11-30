@@ -1,4 +1,4 @@
-function [output_r_or, stress_rr, stress_theta, stress_zz] = equilibrium_r_or_loaded(Ri, Ro, lambda, Pi, materialParameters, x0)
+function [fvalue] = equilibrium_r_or_loaded(Ri, Ro, lambda, Pi, materialParameters, x0)
 
 %=========================================================================
 % RADIAL EQUILIBRIUM - Local
@@ -40,6 +40,5 @@ for index1 = 0:n-1 % for loop going from inner to outer radius
 end
 
 fvalue = T1 - Pi; % ultimately fvalue needs to go to zero (within the defined tolerance)
-output_r_or = fvalue;
 
 end
