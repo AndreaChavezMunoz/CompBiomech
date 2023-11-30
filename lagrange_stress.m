@@ -10,8 +10,8 @@ function [stress_rr, stress_theta, stress_zz] = lagrange_stress(Ri, Ro, lambda, 
 % x0 is the current solution of the Newton-Raphson method
 %=========================================================================
 
-ro = x0(1,1); % outer radius
-
+%ro = x0(1,1); % outer radius
+ro = Ro;
 ri = sqrt(ro.^2 - 1./lambda*(Ro^2-Ri^2)); % calculate the inner radius
 
 a = Ri;   % lower limit of the independent variable a
@@ -22,7 +22,6 @@ n = 20;    % number of spatial steps
 h = (b-a)/n;  % spatial step size, based on n and the bounds [a,b]
 
 % Vector containing lagrange multipliers and stresses
-lagrange_multipliers = zeros(1, n);
 stress_rr = zeros(1, n);
 stress_zz = zeros(1, n);
 stress_theta = zeros(1, n);
@@ -38,7 +37,7 @@ c = materialParameters(7);
 
 for index1 = 0:n-1 % for loop going from inner to outer radius
                 
-   R1 = Ri + index1*h; % reference position
+    R1 = Ri + index1*h; % reference position
     r1 = sqrt((ri .^ 2) - ((1 / lambda)*(R1^2 - Ri^2))); % calculate the radius by mapping from the reference configuration
     F1 = diag([lambda r1/R1 R1/(lambda*r1)]); % define the the deformation gradient tensor (use the diag function)
     sigma_extra1 = constitutive_model(F1, materialParameters); % calculate sigma_extra using the constitutive model
@@ -61,7 +60,7 @@ for index1 = 0:n-1 % for loop going from inner to outer radius
     Ezz = E(3,3);
 
     % Tries to identify the lagrange multiplier
-    p = (lambda ^ 2) * (.5 * c * exp(2 * c1 * Err + 2 * c4 * Etheta + 2 * c6 * Ezz)) - Pi + T1;
+    p = (lambda ^ 2) * (.5 * c * exp(2 * c1 * Err + 2 * c4 * Etheta + 2 * c6 * Ezz)) - (-Pi + T1);
 
     % Calculates stresses with the multiplier
     stress_zz(index1 + 1) = -p +  F2(3, 3) ^ 2 * (.5 * c * exp(2 * c3 * Ezz + 2 * c6 * Err + 2 * c5 * Etheta));
