@@ -9,7 +9,7 @@ function [fvalue] = equilibrium_r_or_loaded(Ri, Ro, lambda, Pi, materialParamete
 % x0 is the current solution of the Newton-Raphson method
 %=========================================================================
 
-ro = x0(1,1); % outer radius
+ro = x0(1,1); % outer radius current
 
 ri = sqrt(ro.^2 - 1./lambda*(Ro^2-Ri^2)); % calculate the inner radius
 

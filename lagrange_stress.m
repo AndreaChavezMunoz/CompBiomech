@@ -1,5 +1,5 @@
 
-function [stress_rr, stress_theta, stress_zz] = lagrange_stress(Ri, Ro, lambda, Pi, materialParameters, x0)
+function [stress_rr, stress_theta, stress_zz, r_position] = lagrange_stress(Ri, Ro, lambda, Pi, materialParameters,x0)
 
 %=========================================================================
 % RADIAL EQUILIBRIUM - Local
@@ -10,8 +10,8 @@ function [stress_rr, stress_theta, stress_zz] = lagrange_stress(Ri, Ro, lambda, 
 % x0 is the current solution of the Newton-Raphson method
 %=========================================================================
 
-%ro = x0(1,1); % outer radius
-ro = Ro;
+ro = x0(1,1); % Current radius
+%ro = Ro; %Why?
 ri = sqrt(ro.^2 - 1./lambda*(Ro^2-Ri^2)); % calculate the inner radius
 
 a = Ri;   % lower limit of the independent variable a
@@ -25,6 +25,7 @@ h = (b-a)/n;  % spatial step size, based on n and the bounds [a,b]
 stress_rr = zeros(1, n);
 stress_zz = zeros(1, n);
 stress_theta = zeros(1, n);
+r_position = zeros(1, n);
 
 % Obtains material parameters
 c1 = materialParameters(1);
@@ -38,7 +39,7 @@ c = materialParameters(7);
 for index1 = 0:n-1 % for loop going from inner to outer radius
                 
     R1 = Ri + index1*h; % reference position
-    r1 = sqrt((ri .^ 2) - ((1 / lambda)*(R1^2 - Ri^2))); % calculate the radius by mapping from the reference configuration
+    r1 = sqrt((ri .^ 2) - ((1 / lambda)*(R1^2 - Ri^2))); % calculate the current radius by mapping from the reference configuration
     F1 = diag([lambda r1/R1 R1/(lambda*r1)]); % define the the deformation gradient tensor (use the diag function)
     sigma_extra1 = constitutive_model(F1, materialParameters); % calculate sigma_extra using the constitutive model
     f1 = R1/(lambda * r1^2) .* (sigma_extra1(2, 2) - sigma_extra1(1, 1)); % evaluate the function inside the integral, at R1
@@ -66,6 +67,9 @@ for index1 = 0:n-1 % for loop going from inner to outer radius
     stress_zz(index1 + 1) = -p +  F2(3, 3) ^ 2 * (.5 * c * exp(2 * c3 * Ezz + 2 * c6 * Err + 2 * c5 * Etheta));
     stress_theta(index1 + 1) = -p + F2(2, 2) ^ 2 * (.5 * c * exp(2 * c2 * Etheta + 2 * c4 * Err + 2 * c5 * Ezz));
     stress_rr(index1 + 1) = -p + F2(1, 1) ^ 2 * (.5 * c * exp(2 * c1 * Err + 2 * c4 * Etheta + 2 * c6 * Ezz)); 
+
+    % Save R
+    r_position(index1 +1) = r1;
 
 end
 end
