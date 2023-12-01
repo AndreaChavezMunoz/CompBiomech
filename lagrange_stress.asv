@@ -61,24 +61,17 @@ for index1 = 0:n-1 % for loop going from inner to outer radius
     Ezz = E(3,3);
 
     % Tries to identify the lagrange multiplier
-    %p = (lambda ^ 2) * (.5 * c * exp(2 * c1 * Err + 2 * c4 * Etheta + 2 * c6 * Ezz)) - (-Pi + T1);
-    Q = (c1* Err^2 + c2*Etheta^2 + c3*Ezz^2 + 2*c4*Err * Etheta +2*c5*Etheta * Ezz + 2*c6*Err*Ezz);
+    Q = c1 * Err^2 + c2 * Etheta^2 + c3 * Ezz^2 + 2*c4*Err*Etheta + 2*c5*Etheta*Ezz + 2*c6*Err*Ezz;
 
-    stress_rr(index1 + 1) = C(1,1) * (.5 * c * exp(Q)*(2*c1*Err +2*c4*Etheta + 2*c6*Ezz)) + Pi - T1;
-    stress_theta(index1 + 1) = C(2,2) * (.5 * c * exp(Q) * (2*c2*Etheta + 2*c4*Err + 2*c5*Ezz) ) + Pi - T1;
-    stress_zz(index1 + 1) = C(3,3) * (.5 * c * exp(Q)*(2*c3*Ezz+2*c5*Etheta+2*c6*Err)) + Pi - T1;
+    stress_rr(index1 + 1) = C(1,1) * 0.5 * c * exp(Q) * (2*c1*Err + 2*c4*Etheta + 2*c6*Ezz) + Pi - T1;
+    stress_theta(index1 + 1) = C(2,2) * 0.5 * c * exp(Q) * (2*c2*Etheta + 2*c4*Err + 2*c5*Ezz) + Pi - T1;
+    stress_zz(index1 + 1) = C(3,3) * 0.5 * c * exp(Q) * (2*c3*Ezz + 2*c5*Etheta + 2*c6*Err) + Pi - T1;
 
-    %stress_rr(index1 + 1) = C(1,1) * (.5 * c * exp(Q)*(2*c1*Err +2*c4*Etheta + 2*c6*Ezz)) + Pi - T1;
-    %stress_theta(index1 + 1) = C(2,2) * (.5 * c * exp(Q) * (2*c2*Etheta + 2*c4*Err + 2*c5*Ezz) ) + Pi - T1;
-    %stress_zz(index1 + 1) = C(3,3) * (.5 * c * exp(Q)*(2*c3*Ezz+2*c5*Etheta+2*c6*Err)) + Pi - T1;
-
-    % Calculates stresses with the multiplier
-    %stress_zz(index1 + 1) = p +  F2(3, 3) ^ 2 * (.5 * c * exp(2 * c3 * Ezz + 2 * c6 * Err + 2 * c5 * Etheta));
-    %stress_theta(index1 + 1) = -p + F2(2, 2) ^ 2 * (.5 * c * exp(2 * c2 * Etheta + 2 * c4 * Err + 2 * c5 * Ezz));
-    %stress_rr(index1 + 1) = -p + F2(1, 1) ^ 2 * (.5 * c * exp(2 * c1 * Err + 2 * c4 * Etheta + 2 * c6 * Ezz)); 
-
+  
     % Save R
     r_position(index1 +1) = r1;
+
+    
 
 end
 end
