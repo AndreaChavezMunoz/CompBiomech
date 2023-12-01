@@ -7,7 +7,7 @@ function [sigma_extra] = Constitutive_model(F, parameters)
 %=========================================================================
 sigma_extra = zeros(3,3);
 
-c1 = parameters(1);
+c1 = parameters(1); 
 c2 = parameters(2);
 c3 = parameters(3);
 c4 = parameters(4);

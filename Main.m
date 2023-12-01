@@ -48,9 +48,10 @@ test_thickness = test_data.data_ktf.h_exp;
 % Unknown: outer radius, ro
 % ro will be estimated as the roots of the equilibrium equation
 
-H=cell(1,2);
+H=cell(1,3);
 H{1,1}=@equilibrium_r_or_loaded; %handle to equilibrium equation 
 H{1,2}=@equilibrum_z_fz_loaded;
+H{1,3}=@lagrange_stress;
 
 % Parameter to be estimated in loaded configuration is the outer radius (ro) 
 % x0 is the initial guess for ro based on the input experimental data
@@ -91,3 +92,36 @@ for stretch_index = 1:length(test_axialStretch)
     hold on
 end
         
+
+%% DELIVERABLE plot radial, circumferential, axial components of Cauchy Stress vs radial position
+
+R_control = linspace(control_ref_inner_radius,control_ref_outer_radius,20)
+R_test = linspace(test_ref_inner_radius,test_ref_outer_radius,20)
+
+% control
+[control_stress_rr control_stress_theta control_stress_zz] = lagrange_stress(control_ref_inner_radius,control_ref_outer_radius,control_axialStretch(1,1),control_Psys_exp,material_control,control_ref_outer_radius)
+
+% test
+[test_stress_rr test_stress_theta test_stress_zz] = lagrange_stress(test_ref_inner_radius,test_ref_outer_radius,test_axialStretch(1,1),test_Psys_exp,material_test,test_ref_outer_radius)
+        
+figure()
+plot(R_control, control_stress_rr,R_test,test_stress_rr)
+xlabel('Radial Position (mm)')
+ylabel('Cauchy Stress - Radial')
+legend('control','hypertension')
+title('Cauchy Stress vs Radial Position - Radial')
+
+figure()
+plot(R_control, control_stress_theta,R_test,test_stress_theta)
+xlabel('Radial Position (mm)')
+ylabel('Cauchy Stress - Circumferential')
+legend('control','hypertension')
+title('Cauchy Stress vs Radial Position - Circumferential')
+
+figure()
+plot(R_control, control_stress_zz,R_test,test_stress_zz)
+xlabel('Radial Position (mm)')
+ylabel('Cauchy Stress - Axial')
+legend('control','hypertension')
+title('Cauchy Stress vs Radial Position - Axial')
+
