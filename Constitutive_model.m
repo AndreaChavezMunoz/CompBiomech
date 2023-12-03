@@ -24,9 +24,9 @@ Ezz = E(3,3);
 Q = (c1 * Err^2) + (c2 * Etheta^2) + (c3 * Ezz^2) + (2*c4 * Err*Etheta) + (2*c5 * Etheta*Ezz) + (2*c6 * Err*Ezz);
 
 %Cauchy extra stress
-sigma_extra(1,1) = (0.5 * c * exp(Q)) * ((2*Err*c1) + (2*c4*Etheta) + (2*c6*Ezz)); %r component
-sigma_extra(2,2) = (0.5 * c * exp(Q)) * ((2*c2*Etheta) + (2*c4*Err) + (2*c5*Ezz)); %theta component
-sigma_extra(3,3) = (0.5 * c * exp(Q)) * ((2*c3*Ezz) + (2*c5*Etheta) + (2*c6*Err)); %z component
+sigma_extra(1,1) = C(1,1)*(0.5 * c * exp(Q)) * ((2*Err*c1) + (2*c4*Etheta) + (2*c6*Ezz)); %r component
+sigma_extra(2,2) = C(2,2)*(0.5 * c * exp(Q)) * ((2*c2*Etheta) + (2*c4*Err) + (2*c5*Ezz)); %theta component
+sigma_extra(3,3) = C(3,3)*(0.5 * c * exp(Q)) * ((2*c3*Ezz) + (2*c5*Etheta) + (2*c6*Err)); %z component
 
 end
 
